@@ -2,26 +2,23 @@ package kr.or.dgit.coffee_application.ui;
 
 import java.awt.BorderLayout;
 import java.awt.EventQueue;
+import java.awt.Font;
+import java.util.List;
 
 import javax.swing.JFrame;
+import javax.swing.JLabel;
 import javax.swing.JPanel;
-import javax.swing.border.EmptyBorder;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.ListSelectionModel;
+import javax.swing.SwingConstants;
+import javax.swing.border.EmptyBorder;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableColumnModel;
 
-import kr.or.dgit.coffee_application.dao.PdIntroDao;
 import kr.or.dgit.coffee_application.dto.PdIntro;
-import kr.or.dgit.coffee_application.ui.Coffee_output1_table.NonEditableModel;
-
-import javax.swing.JLabel;
-import javax.swing.SwingConstants;
-import java.awt.Font;
-import java.sql.SQLException;
-import java.util.List;
+import kr.or.dgit.coffee_application.service.CoffeeService;
 
 public class Coffee_output2_table extends JFrame {
 
@@ -95,27 +92,23 @@ public class Coffee_output2_table extends JFrame {
 	}
 	public Object[][] getRows(){
 		Object[][] rows = null;
-		try {
-			List<PdIntro> list = PdIntroDao.getInstance().selectItemByAllMargin();
-			rows = new Object[list.size()+1][];
-			int sumSv = 0;
-			int sumVat = 0;
-			int sumSell = 0;
-			int sumMar =0;
-			for(int i = 0; i<rows.length-1; i++) {
-				rows[i] = list.get(i).toArray();
-				sumSv += list.get(i).getSupplyvalue();
-				sumVat += list.get(i).getVat();
-				sumSell += list.get(i).getSelling();
-				sumMar += list.get(i).getMargin();
-			}
-			rows[list.size()] = new String[] {"합계","","","","",String.format("%,d", sumSv),String.format("%,d", sumVat),
-					String.format("%,d", sumSell),"",String.format("%,d", sumMar)
-			};
-			return rows;
-		}catch(SQLException e) {
-			e.printStackTrace();
+		List<PdIntro> list = CoffeeService.getInstance().selectPriceByAllMargin();
+				//PdIntroDao.getInstance().selectItemByAllMargin();
+		rows = new Object[list.size()+1][];
+		int sumSv = 0;
+		int sumVat = 0;
+		int sumSell = 0;
+		int sumMar =0;
+		for(int i = 0; i<rows.length-1; i++) {
+			rows[i] = list.get(i).toArray();
+			sumSv += list.get(i).getSupplyvalue();
+			sumVat += list.get(i).getVat();
+			sumSell += list.get(i).getSelling();
+			sumMar += list.get(i).getMargin();
 		}
+		rows[list.size()] = new String[] {"합계","","","","",String.format("%,d", sumSv),String.format("%,d", sumVat),
+				String.format("%,d", sumSell),"",String.format("%,d", sumMar)
+		};
 		return rows;
 	}
 	

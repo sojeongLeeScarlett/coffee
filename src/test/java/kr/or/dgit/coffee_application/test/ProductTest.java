@@ -1,23 +1,7 @@
 package kr.or.dgit.coffee_application.test;
 
-import static org.junit.Assert.*;
-
-import java.sql.SQLException;
-import java.util.List;
-
-import org.junit.AfterClass;
-import org.junit.BeforeClass;
-import org.junit.Test;
-
-import kr.or.dgit.coffee_application.dao.PdIntroDao;
-import kr.or.dgit.coffee_application.dao.ProductDao;
-import kr.or.dgit.coffee_application.dto.PdIntro;
-import kr.or.dgit.coffee_application.dto.Product;
-import kr.or.dgit.coffee_application.service.PdIntroService;
-
-
 public class ProductTest {
-		private static ProductDao service;
+/*		private static ProductDao service;
 
 	@BeforeClass
 	public static void setUpBeforeClass() throws Exception {
@@ -78,7 +62,7 @@ public class ProductTest {
 		service.deleteItem(product);
 		System.out.println(product);
 		assertNotNull(product);
-	}
+	}*/
 	
 	
 	

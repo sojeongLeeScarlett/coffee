@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper	namespace="kr.or.dgit.coffee_application.dao.CoffeeDao">
+	<resultMap type="PdIntro" id="pdIntroResult">
+		<result property="pdUnitprice" column="pdUnitprice"/>
+		<result property="pdUnitsales" column="pdUnitsales"/>
+		<result property="pdPermargin" column="pdPermargin"/>
+	</resultMap>
+	<resultMap type="PdIntro" id="productResult" extends="pdIntroResult">
+		<result property="pd.pdCode" column="pdCode"/>
+		<result property="pd.pdName" column="pdName"/>
+	</resultMap>
+	<!-- price -->
+	<select id="selectPriceByAll" resultMap="productResult">
+		select*from pdintro
+	</select>
+	
+	<select id="selectPriceByNo" resultMap="productResult">
+		select*from pdintro where pdCode = #{pd.pdCode}
+	</select>
+	
+	<select id="selectPriceByAllMargin" resultMap="productResult">
+			select s.pdCode,s.pdName,s.pdUnitprice,s.pdUnitsales,s.pdPermargin, (s.pdUnitprice*s.pdUnitsales) as '판매 금액',
+		round((s.pdUnitprice*s.pdUnitsales)/11) as '부가세액', round((s.pdUnitprice*s.pdUnitsales)-(s.pdUnitprice*s.pdUnitsales)/11) as '공급가액', 
+		round(((s.pdUnitprice*s.pdUnitsales)-round((s.pdUnitprice*s.pdUnitsales)/11))*(s.pdPermargin/100)) as '마진액',
+		(select count(*)+1 from pdintro where round(((pdUnitprice*pdUnitsales)-round((pdUnitprice*pdUnitsales)/11))*(pdPermargin/100))>
+		round(((s.pdUnitprice*s.pdUnitsales)-round((s.pdUnitprice*s.pdUnitsales)/11))*(s.pdPermargin/100))) as 'rank' 
+		from product pr join pdintro s on s.pdCode = pr.pdCode order by rank
+	</select>
+	
+	<select id="selectPriceByAllSelling" resultMap="productResult">
+		select s.pdCode,s.pdName,s.pdUnitprice,s.pdUnitsales,s.pdPermargin,
+		 (s.pdUnitprice*s.pdUnitsales) as '판매 금액',round((s.pdUnitprice*s.pdUnitsales)/11) as '부가세액',
+		  round((s.pdUnitprice*s.pdUnitsales)-(s.pdUnitprice*s.pdUnitsales)/11) as '공급가액',
+		  round(((s.pdUnitprice*s.pdUnitsales)-round((s.pdUnitprice*s.pdUnitsales)/11))*(s.pdPermargin/100)) as '마진액',
+		  (select count(*)+1 from pdintro where (pdUnitprice*pdUnitsales)>(s.pdUnitprice*s.pdUnitsales)) as 'rank' 
+		  from product pr join pdintro s on s.pdCode = pr.pdCode order by rank
+	</select>
+	
+	<update id="updatePrice" parameterType="PdIntro">
+		update pdintro set pdUnitprice=#{pdUnitprice} pdUnitsales=#{pdUnitsales} pdPermargin=#{pdPermargin} where pdCode=#{pd.pdCode}
+	</update>
+	
+	<delete id="deletePrice" parameterType="PdIntro">
+		delete from pdintro where pdCode=#{pd.pdCode}
+	</delete>
+	
+	<insert id="insertPrice" parameterType="PdIntro">
+		insert into pdintro values(#{pd.pdCode},#{pd.pdName},#{pdUnitprice},#{pdUnitsales},#{pdPermargin})
+	</insert>
+	
+
+</mapper>

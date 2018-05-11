@@ -2,31 +2,23 @@ package kr.or.dgit.coffee_application.ui;
 
 import java.awt.BorderLayout;
 import java.awt.EventQueue;
+import java.awt.GridLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.sql.SQLException;
 
+import javax.swing.JButton;
 import javax.swing.JFrame;
-import javax.swing.JPanel;
-import javax.swing.border.EmptyBorder;
-
-import kr.or.dgit.coffee_application.dao.PdIntroDao;
-import kr.or.dgit.coffee_application.dao.ProductDao;
-import kr.or.dgit.coffee_application.dto.PdIntro;
-import kr.or.dgit.coffee_application.dto.Product;
-import kr.or.dgit.coffee_application.service.PdIntroService;
-import kr.or.dgit.coffee_application.service.ProductService;
-
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
+import javax.swing.JPanel;
 import javax.swing.JTextField;
-import javax.swing.BoxLayout;
-import java.awt.FlowLayout;
-import java.awt.GridLayout;
 import javax.swing.SwingConstants;
-import javax.swing.JButton;
-import java.awt.event.ActionListener;
-import java.awt.event.KeyAdapter;
-import java.awt.event.KeyEvent;
-import java.sql.SQLException;
-import java.awt.event.ActionEvent;
+import javax.swing.border.EmptyBorder;
+
+import kr.or.dgit.coffee_application.dto.PdIntro;
+import kr.or.dgit.coffee_application.dto.Product;
+import kr.or.dgit.coffee_application.service.CoffeeService;
 
 public class CoffeeUI extends JFrame implements ActionListener {
 
@@ -37,8 +29,6 @@ public class CoffeeUI extends JFrame implements ActionListener {
 	private JTextField tfus;
 	private JTextField tfpm;
 	private JButton btnInput;
-	ProductService ps = new ProductService();
-	PdIntroService pi = new PdIntroService();
 	private JButton btnOutput1;
 	private JButton btnOutput2;
 
@@ -158,7 +148,12 @@ public class CoffeeUI extends JFrame implements ActionListener {
 	
 	public void actionPerformed(ActionEvent e) {
 		if (e.getSource() == tfpdCode) {
-			actionPerformedTfpdCode(e);
+			try {
+				actionPerformedTfpdCode(e);
+			} catch (SQLException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
 		}
 		if (e.getSource() == btnOutput2) {
 			actionPerformedBtnOutput2(e);
@@ -188,9 +183,10 @@ public class CoffeeUI extends JFrame implements ActionListener {
 			
 			
 			PdIntro pdIntro = new PdIntro(pd, pdUnitprice, pdUnitsales, pdPermargin);
-			
-			pi.insertItem(pdIntro);
-			ps.insertItem(pd);
+			CoffeeService.getInstance().insertPrice(pdIntro);
+			CoffeeService.getInstance().insertProduct(pd);
+			/*pi.insertItem(pdIntro);
+			ps.insertItem(pd);*/
 			JOptionPane.showConfirmDialog(null, "입력 되었습니다.");
 			clearItem();
 		} catch (NumberFormatException e2) {
@@ -216,7 +212,7 @@ public class CoffeeUI extends JFrame implements ActionListener {
 		cot2.setBounds(100, 100, 700, 500);
 		cot2.setVisible(true);
 	}
-	protected void actionPerformedTfpdCode(ActionEvent e) {
+	protected void actionPerformedTfpdCode(ActionEvent e) throws SQLException {
 		if(tfpdCode.getText().trim().equals("")) {
 			return;
 		}
@@ -224,13 +220,8 @@ public class CoffeeUI extends JFrame implements ActionListener {
 		String pdCode =tfpdCode.getText();
 		Product product = new Product();
 		product.setPdCode(pdCode);
-		try {
-			product = ProductDao.getInstance().selectItemByNo(product);
-			tfpdName.setText(product.getPdName());
-			
-		} catch (SQLException e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
-		}
+		product = CoffeeService.getInstance().selectProductByNo(product);
+				//ProductDao.getInstance().selectItemByNo(product);
+		tfpdName.setText(product.getPdName());
 	}
 }
