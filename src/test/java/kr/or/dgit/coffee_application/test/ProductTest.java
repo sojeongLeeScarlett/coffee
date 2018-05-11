@@ -1,11 +1,23 @@
 package kr.or.dgit.coffee_application.test;
 
+import static org.junit.Assert.assertNotNull;
+
+import java.sql.SQLException;
+import java.util.List;
+
+import org.junit.AfterClass;
+import org.junit.BeforeClass;
+import org.junit.Test;
+
+import kr.or.dgit.coffee_application.dto.Product;
+import kr.or.dgit.coffee_application.service.CoffeeService;
+
 public class ProductTest {
-/*		private static ProductDao service;
+	private static CoffeeService service;
 
 	@BeforeClass
 	public static void setUpBeforeClass() throws Exception {
-		service = ProductDao.getInstance();
+		service = CoffeeService.getInstance();
 	}
 
 	@AfterClass
@@ -15,7 +27,7 @@ public class ProductTest {
 	//prdIntro 테스트
 	@Test
 	public void testAselcectByAll() throws SQLException {
-		List<Product> listad = service.selectItemByAll();
+		List<Product> listad = service.selectProductByAll();
 		System.out.println(listad);
 		assertNotNull(listad);
 		for(Product ad : listad) {
@@ -28,7 +40,7 @@ public class ProductTest {
 	public void testBelectItemByNo() throws SQLException {
 		Product product = new Product();
 		product.setPdCode("A002");
-		Product listad = service.selectItemByNo(product);
+		Product listad = service.selectProductByNo(product);
 		System.out.println(listad);
 		assertNotNull(listad);
 	}
@@ -39,7 +51,7 @@ public class ProductTest {
 		product.setPdCode("EE112");
 		product.setPdName("테스트");
 		
-		service.insertItem(product);
+		service.insertProduct(product);
 		System.out.println(product);
 		assertNotNull(product);
 	}
@@ -49,7 +61,7 @@ public class ProductTest {
 		Product product = new Product();
 		product.setPdCode("EE112");
 		product.setPdName("얌얌");
-		service.updateItem(product);
+		service.updateProduct(product);
 		System.out.println(product);
 		assertNotNull(product);
 	}
@@ -59,10 +71,10 @@ public class ProductTest {
 		Product product = new Product();
 		product.setPdCode("EE112");
 		
-		service.deleteItem(product);
+		service.deleteProduct(product);
 		System.out.println(product);
 		assertNotNull(product);
-	}*/
+	}
 	
 	
 	

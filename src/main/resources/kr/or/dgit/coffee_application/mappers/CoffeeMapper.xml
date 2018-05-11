@@ -20,9 +20,9 @@
 	</select>
 	
 	<select id="selectPriceByAllMargin" resultMap="productResult">
-			select s.pdCode,s.pdName,s.pdUnitprice,s.pdUnitsales,s.pdPermargin, (s.pdUnitprice*s.pdUnitsales) as '판매 금액',
-		round((s.pdUnitprice*s.pdUnitsales)/11) as '부가세액', round((s.pdUnitprice*s.pdUnitsales)-(s.pdUnitprice*s.pdUnitsales)/11) as '공급가액', 
-		round(((s.pdUnitprice*s.pdUnitsales)-round((s.pdUnitprice*s.pdUnitsales)/11))*(s.pdPermargin/100)) as '마진액',
+			select s.pdCode,s.pdName,s.pdUnitprice,s.pdUnitsales,s.pdPermargin, (s.pdUnitprice*s.pdUnitsales) as 'selling',
+		round((s.pdUnitprice*s.pdUnitsales)/11) as 'vat', round((s.pdUnitprice*s.pdUnitsales)-(s.pdUnitprice*s.pdUnitsales)/11) as 'supplyvalue', 
+		round(((s.pdUnitprice*s.pdUnitsales)-round((s.pdUnitprice*s.pdUnitsales)/11))*(s.pdPermargin/100)) as 'margin',
 		(select count(*)+1 from pdintro where round(((pdUnitprice*pdUnitsales)-round((pdUnitprice*pdUnitsales)/11))*(pdPermargin/100))>
 		round(((s.pdUnitprice*s.pdUnitsales)-round((s.pdUnitprice*s.pdUnitsales)/11))*(s.pdPermargin/100))) as 'rank' 
 		from product pr join pdintro s on s.pdCode = pr.pdCode order by rank
@@ -30,9 +30,9 @@
 	
 	<select id="selectPriceByAllSelling" resultMap="productResult">
 		select s.pdCode,s.pdName,s.pdUnitprice,s.pdUnitsales,s.pdPermargin,
-		 (s.pdUnitprice*s.pdUnitsales) as '판매 금액',round((s.pdUnitprice*s.pdUnitsales)/11) as '부가세액',
-		  round((s.pdUnitprice*s.pdUnitsales)-(s.pdUnitprice*s.pdUnitsales)/11) as '공급가액',
-		  round(((s.pdUnitprice*s.pdUnitsales)-round((s.pdUnitprice*s.pdUnitsales)/11))*(s.pdPermargin/100)) as '마진액',
+		 (s.pdUnitprice*s.pdUnitsales) as 'selling',round((s.pdUnitprice*s.pdUnitsales)/11) as 'vat',
+		  round((s.pdUnitprice*s.pdUnitsales)-(s.pdUnitprice*s.pdUnitsales)/11) as 'supplyvalue',
+		  round(((s.pdUnitprice*s.pdUnitsales)-round((s.pdUnitprice*s.pdUnitsales)/11))*(s.pdPermargin/100)) as 'margin',
 		  (select count(*)+1 from pdintro where (pdUnitprice*pdUnitsales)>(s.pdUnitprice*s.pdUnitsales)) as 'rank' 
 		  from product pr join pdintro s on s.pdCode = pr.pdCode order by rank
 	</select>
