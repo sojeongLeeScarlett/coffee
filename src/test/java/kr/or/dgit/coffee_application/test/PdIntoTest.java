@@ -7,12 +7,15 @@ import java.util.List;
 
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
+import org.junit.FixMethodOrder;
 import org.junit.Test;
+import org.junit.runners.MethodSorters;
 
 import kr.or.dgit.coffee_application.dto.PdIntro;
 import kr.or.dgit.coffee_application.dto.Product;
 import kr.or.dgit.coffee_application.service.CoffeeService;
 
+@FixMethodOrder(MethodSorters.NAME_ASCENDING)
 public class PdIntoTest {
 	private static CoffeeService service;
 
@@ -27,7 +30,7 @@ public class PdIntoTest {
 	}
 	//prdIntro 테스트
 	@Test
-	public void testAselcectByAll() throws SQLException {
+	public void testAselcectSaleByAll() throws SQLException {
 		List<PdIntro> listad = service.selectPriceByAll();
 		System.out.println(listad);
 		assertNotNull(listad);
@@ -37,7 +40,7 @@ public class PdIntoTest {
 	}
 	
 	@Test
-	public void testBselectItemByAllMargin() throws SQLException {
+	public void testGcallgetTotal() throws SQLException {
 		List<PdIntro> listad = service.selectPriceByAllMargin();
 		System.out.println(listad);
 		assertNotNull(listad);
@@ -47,7 +50,7 @@ public class PdIntoTest {
 	}
 	
 	@Test
-	public void testBselectcallSaleDetail() throws SQLException {
+	public void testFcallSaleDetail() throws SQLException {
 		List<PdIntro> listad = service.selectPriceByAllSelling();
 		System.out.println(listad);
 		assertNotNull(listad);
@@ -57,7 +60,7 @@ public class PdIntoTest {
 	}
 	
 	@Test
-	public void testBelectItemByNo() throws SQLException {
+	public void testBelectSaleByNo() throws SQLException {
 		Product product = new Product();
 		product.setPdCode("A002");
 		PdIntro intro = new PdIntro();
@@ -96,7 +99,7 @@ public class PdIntoTest {
 		assertNotNull(prd);
 	}
 	
-	@Test
+	//@Test
 	public void testEDeletePd() throws SQLException{
 		Product product = new Product();
 		product.setPdCode("EE112");
@@ -107,7 +110,7 @@ public class PdIntoTest {
 		assertNotNull(prd);
 	}
 	
-	@Test
+	//@Test
 	public void testFselcectByAll() throws SQLException {
 		List<Product> listad = service.selectProductByAll();
 		System.out.println(listad);
@@ -118,7 +121,7 @@ public class PdIntoTest {
 	}
 	
 	
-	@Test
+	//@Test
 	public void testGelectItemByNo() throws SQLException {
 		Product product = new Product();
 		product.setPdCode("A002");
@@ -127,8 +130,8 @@ public class PdIntoTest {
 		assertNotNull(listad);
 	}
 	
-	//@Test
-	public void testHInsertPrd() throws SQLException{
+	@Test
+	public void testCInsertProduct() throws SQLException{
 		Product product = new Product();
 		product.setPdCode("EE112");
 		product.setPdName("테스트");
@@ -139,7 +142,7 @@ public class PdIntoTest {
 	}
 	
 	@Test
-	public void testIUpdatePd() throws SQLException{
+	public void testDUpdateProduct() throws SQLException{
 		Product product = new Product();
 		product.setPdCode("EE112");
 		product.setPdName("얌얌");
@@ -149,7 +152,7 @@ public class PdIntoTest {
 	}
 	
 	@Test
-	public void testJDeletePd() throws SQLException{
+	public void testEDeleteProduct() throws SQLException{
 		Product product = new Product();
 		product.setPdCode("EE112");
 		
